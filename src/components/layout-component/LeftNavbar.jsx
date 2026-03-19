@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaNewspaper } from "react-icons/fa";
+import axiosInstance from "../../utils/axiosInstance";
 
 const LeftNavbar = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO Part 3: replace with own backend → axiosInstance.get("/categories")
-    fetch("https://openapi.programming-hero.com/api/news/categories")
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data.data.news_category);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    // Fetch categories from our own backend
+    axiosInstance
+      .get("/categories")
+      .then((res) => setCategories(res.data.categories))
+      .catch((err) => console.error("Category fetch error:", err))
+      .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -29,7 +28,10 @@ const LeftNavbar = () => {
       {loading && (
         <div className="flex flex-col gap-2">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+            <div
+              key={i}
+              className="h-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"
+            />
           ))}
         </div>
       )}
@@ -37,17 +39,17 @@ const LeftNavbar = () => {
       <div className="flex flex-col gap-2">
         {categories.map((category) => (
           <NavLink
-            key={category.category_id}
-            to={`/category/${category.category_id}`}
+            key={category._id}
+            to={`/category/${category._id}`}
             className={({ isActive }) =>
               `btn border-none text-left justify-start ${
                 isActive
-                  ? "bg-red-500 text-white"  // active category highlighted
+                  ? "bg-red-500 text-white"
                   : "bg-base-100 hover:bg-red-50 hover:text-red-500"
               }`
             }
           >
-            {category.category_name}
+            {category.name}
           </NavLink>
         ))}
       </div>

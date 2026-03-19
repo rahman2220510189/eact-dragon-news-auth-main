@@ -1,6 +1,6 @@
 import FindUs from "../FindUs";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaBriefcase, FaInfoCircle, FaUser } from "react-icons/fa";
+import { FaHome, FaBriefcase, FaInfoCircle, FaUser, FaUserCircle } from "react-icons/fa";
 import { FaShieldHalved } from "react-icons/fa6";
 import useAuth from "../../hooks/useAuth";
 
@@ -16,6 +16,21 @@ const RightNav = () => {
 
   return (
     <div className="space-y-5 sticky top-4">
+
+      {/* User info card — only shown when logged in */}
+      {user && (
+        <div className="flex items-center gap-3 p-3 bg-base-100 dark:bg-gray-800 rounded-lg border border-base-200 dark:border-gray-700">
+          <img
+            src={user.photo || "/default-avatar.png"}
+            alt={user.name}
+            className="w-10 h-10 rounded-full object-cover border-2 border-red-300 shrink-0"
+          />
+          <div className="overflow-hidden">
+            <p className="font-semibold text-sm truncate dark:text-white">{user.name}</p>
+            <p className="text-xs text-gray-400 truncate">{user.email}</p>
+          </div>
+        </div>
+      )}
 
       {/* Navigation Links */}
       <div>
@@ -34,29 +49,19 @@ const RightNav = () => {
             <FaShieldHalved className="text-red-500" /> Fake News Detector
           </NavLink>
 
-          {/* Login or User Profile */}
+          {/* Profile + Logout or Login */}
           {user ? (
-            <div className="flex flex-col gap-2 mt-1">
-              {/* User info card */}
-              <div className="flex items-center gap-2 px-3 py-2 bg-base-100 rounded dark:bg-gray-800">
-                <img
-                  src={user.photo || "/default-avatar.png"}
-                  alt={user.name}
-                  className="w-7 h-7 rounded-full object-cover border border-gray-200"
-                />
-                <div className="overflow-hidden">
-                  <p className="text-xs font-semibold truncate">{user.name}</p>
-                  <p className="text-xs text-gray-400 truncate">{user.email}</p>
-                </div>
-              </div>
-              {/* Logout button */}
+            <>
+              <NavLink to="/profile" className={activeClass}>
+                <FaUserCircle /> Profile
+              </NavLink>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-base-100 hover:bg-red-50 hover:text-red-500 transition dark:bg-gray-800"
+                className="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-base-100 hover:bg-red-50 hover:text-red-500 transition dark:bg-gray-800 dark:text-gray-200"
               >
                 <FaUser /> Logout
               </button>
-            </div>
+            </>
           ) : (
             <NavLink to="/auth/login" className={activeClass}>
               <FaUser /> Login

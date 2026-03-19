@@ -1,67 +1,72 @@
 import { FaShareAlt, FaRegEye } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
-const NewsCard = (props = {}) => {
-  const { news } = props || {};
-
+const NewsCard = ({ news }) => {
   return (
-    <div className=" p-4 bg-white rounded-lg shadow-md">
-      {/* Author Information */}
+    <div className="p-4 bg-base-100 rounded-lg shadow-sm border border-base-200 dark:bg-gray-800 dark:border-gray-700">
+
+      {/* Author Info */}
       <div className="flex items-center mb-4">
         <img
-          src={news.author.img}
-          alt={news.author.name}
-          className="w-10 h-10 rounded-full mr-3"
+          src={news.author?.photo || "/default-avatar.png"}
+          alt={news.author?.name}
+          className="w-10 h-10 rounded-full mr-3 object-cover border border-gray-200"
         />
         <div>
-          <p className="font-semibold">{news.author.name}</p>
-          <p className="text-sm text-gray-500">{news.author.published_date}</p>
+          <p className="font-semibold text-sm">{news.author?.name}</p>
+          <p className="text-xs text-gray-500">
+            {new Date(news.createdAt).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
         </div>
-        <div className="ml-auto">
-          <FaShareAlt className="text-gray-600" />
+        {/* Share icon */}
+        <div className="ml-auto cursor-pointer hover:text-red-500 transition">
+          <FaShareAlt className="text-gray-400" />
         </div>
       </div>
 
       {/* Title */}
-      <h2 className="text-xl font-semibold mb-2">{news.title}</h2>
+      <h2 className="text-lg font-semibold mb-2 dark:text-white">
+        {news.title}
+      </h2>
 
-      {/* Thumbnail Image */}
-      <img
-        src={news.image_url}
-        alt="Thumbnail"
-        className="w-full  object-cover rounded-lg mb-4"
-      />
+      {/* Thumbnail */}
+      {news.thumbnail && (
+        <img
+          src={news.thumbnail}
+          alt="Thumbnail"
+          className="w-full object-cover rounded-lg mb-4 max-h-52"
+        />
+      )}
 
-      {/* Details */}
-      <p className="text-gray-700 text-sm mb-4">
-        {news.details.slice(0, 150)}...{" "}
-        <span className="text-primary">Read More</span>
+      {/* Content preview */}
+      <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+        {news.content?.slice(0, 150)}...{" "}
+        <Link
+          to={`/news/${news._id}`}
+          className="text-red-500 hover:underline font-medium"
+        >
+          Read More
+        </Link>
       </p>
 
-      {/* Ratings and Views */}
-      <div className="flex items-center justify-between text-gray-600 text-sm">
-        {/* Rating */}
-        <div className="flex items-center">
-          {[...Array(5)].map((_, i) => (
-            <AiFillStar
-              key={i}
-              className={`text-yellow-500 ${
-                i < Math.round(news.rating.number) ? "" : "opacity-50"
-              }`}
-            />
-          ))}
-          <span className="ml-2 font-semibold">{news.rating.number}</span>
-        </div>
-
-        {/* Views */}
-        <div className="flex items-center">
-          <FaRegEye className="mr-1" />
-          <span>{news.total_view}</span>
+      {/* Category + Views */}
+      <div className="flex items-center justify-between text-gray-500 text-xs">
+        <span className="bg-red-50 text-red-500 px-2 py-1 rounded-full font-medium">
+          {news.category}
+        </span>
+        <div className="flex items-center gap-1">
+          <FaRegEye />
+          <span>{news.views || 0} views</span>
         </div>
       </div>
+
     </div>
   );
 };
+
 export default NewsCard;
-
-

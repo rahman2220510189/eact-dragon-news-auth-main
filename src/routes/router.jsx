@@ -1,10 +1,11 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
-import Error from "../pages/Error";
-import CategoryNews from "../pages/CategoryNews";
 import AuthLayout from "../Auth/AuthLayout";
+import CategoryNews from "../pages/CategoryNews";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
+import Error from "../pages/Error";
+import Profile from "../pages/Profile";
 
 const router = createBrowserRouter([
   {
@@ -17,13 +18,14 @@ const router = createBrowserRouter([
         element: <Navigate to="/category/01" replace />,
       },
       {
+        // No loader — data fetched inside component
         path: "category/:id",
         element: <CategoryNews />,
-        loader: ({ params }) =>
-          fetch(
-            `https://openapi.programming-hero.com/api/news/category/${params.id}`
-          ),
       },
+      {
+  path: "profile",
+  element: <Profile />,
+},
     ],
   },
   {
