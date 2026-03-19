@@ -1,21 +1,26 @@
-import { Link } from "react-router-dom";
-import userIcon from "../assets/user.png";
+import { NavLink } from "react-router-dom";
+import { FaHome, FaNewspaper, FaUser } from "react-icons/fa";
+
 const Navbar = () => {
+  const linkClass = ({ isActive }) =>
+    `inline-flex items-center gap-2 px-3 py-2 rounded text-sm font-medium transition ${
+      isActive
+        ? "bg-red-500 text-white"
+        : "text-gray-700 hover:bg-red-50 hover:text-red-500 dark:text-gray-200 dark:hover:bg-gray-800"
+    }`;
+
   return (
-    <div className="flex justify-between items-center">
-      <div className=""></div>
-      <div className="nav space-x-5">
-        <Link to="/">Home</Link>
-        <Link to="/career">Career</Link>
-        <Link to="/about">About</Link>
-      </div>
-      <div className="login flex gap-2 items-center">
-        <div className=" ">
-          <img src={userIcon} alt="" />
-        </div>
-        <button className="btn btn-neutral rounded-none">Login</button>
-      </div>
-    </div>
+    <nav className="flex flex-wrap gap-2 justify-center">
+      <NavLink to="/" end className={linkClass}>
+        <FaHome /> Home
+      </NavLink>
+      <NavLink to="/news" className={linkClass}>
+        <FaNewspaper /> News
+      </NavLink>
+      <NavLink to="/auth" className={linkClass}>
+        <FaUser /> Login
+      </NavLink>
+    </nav>
   );
 };
 

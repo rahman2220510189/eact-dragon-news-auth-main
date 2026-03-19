@@ -1,19 +1,28 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
+import Error from "../pages/Error";
 import CategoryNews from "../pages/CategoryNews";
+import AuthLayout from "../Auth/AuthLayout";
+import Login from "../Auth/Login";
+import Register from "../Auth/Register";
+
 
 const router = createBrowserRouter([
   {
+    // Main portal layout with 3-column grid
     path: "/",
-    element: <HomeLayout></HomeLayout>,
+    element: <HomeLayout />,
+    errorElement: <Error />,
     children: [
       {
-        path: "",
-        element: <Navigate to={"/category/01"}></Navigate>,
+        index: true,
+        // Default redirect to first category
+        element: <Navigate to="/category/01" replace />,
       },
       {
-        path: "/category/:id",
-        element: <CategoryNews></CategoryNews>,
+        path: "category/:id",
+        element: <CategoryNews  />,
+        // TODO Part 3: replace loader with own backend call
         loader: ({ params }) =>
           fetch(
             `https://openapi.programming-hero.com/api/news/category/${params.id}`
@@ -22,16 +31,18 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/news",
-    element: <h1>News Layout</h1>,
+    // Auth pages — separate clean layout
+    path: "/auth",
+    element: <AuthLayout />,
+    children: [
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
   },
   {
-    path: "auth",
-    element: <h1>Login</h1>,
-  },
-  {
+    // Catch-all 404 page
     path: "*",
-    element: <h1>Error</h1>,
+    element: <Error />,
   },
 ]);
 
