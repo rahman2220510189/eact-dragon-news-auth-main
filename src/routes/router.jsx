@@ -6,23 +6,19 @@ import AuthLayout from "../Auth/AuthLayout";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 
-
 const router = createBrowserRouter([
   {
-    // Main portal layout with 3-column grid
     path: "/",
     element: <HomeLayout />,
     errorElement: <Error />,
     children: [
       {
         index: true,
-        // Default redirect to first category
         element: <Navigate to="/category/01" replace />,
       },
       {
         path: "category/:id",
-        element: <CategoryNews  />,
-        // TODO Part 3: replace loader with own backend call
+        element: <CategoryNews />,
         loader: ({ params }) =>
           fetch(
             `https://openapi.programming-hero.com/api/news/category/${params.id}`
@@ -31,7 +27,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // Auth pages — separate clean layout
     path: "/auth",
     element: <AuthLayout />,
     children: [
@@ -40,7 +35,6 @@ const router = createBrowserRouter([
     ],
   },
   {
-    // Catch-all 404 page
     path: "*",
     element: <Error />,
   },
