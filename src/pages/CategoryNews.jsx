@@ -8,13 +8,22 @@ const CategoryNews = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [categoryName, setCategoryName] = useState("");
 
   useEffect(() => {
     setLoading(true);
 
-    // Fetch news by category id from our backend
+    // First get category name by id
     axiosInstance
-      .get(`/news?category=${id}`)
+      .get(`/categories/${id}`)
+      .then((res) => {
+        const name = res.data.category.name;
+        setCategoryName(name);
+
+        // If "All News" fetch everything, otherwise filter by name
+        const url = name === "All News" ? "/news" : `/news?category=${encodeURIComponent(name)}`;
+        return axiosInstance.get(url);
+      })
       .then((res) => {
         setNews(res.data.news);
         setTotal(res.data.total);
@@ -49,6 +58,7 @@ const CategoryNews = () => {
 
   return (
     <div>
+      <h2 className="font-semibold mb-2 dark:text-white">{categoryName}</h2>
       <p className="text-gray-400 text-sm mb-4">
         {total} news found in this category
       </p>

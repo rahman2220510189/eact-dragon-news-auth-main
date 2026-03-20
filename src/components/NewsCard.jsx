@@ -1,5 +1,4 @@
 import { FaShareAlt, FaRegEye } from "react-icons/fa";
-import { AiFillStar } from "react-icons/ai";
 import { Link } from "react-router-dom";
 
 const NewsCard = ({ news }) => {
@@ -14,7 +13,9 @@ const NewsCard = ({ news }) => {
           className="w-10 h-10 rounded-full mr-3 object-cover border border-gray-200"
         />
         <div>
-          <p className="font-semibold text-sm">{news.author?.name}</p>
+          <p className="font-semibold text-sm dark:text-white">
+            {news.author?.name}
+          </p>
           <p className="text-xs text-gray-500">
             {new Date(news.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
@@ -46,6 +47,7 @@ const NewsCard = ({ news }) => {
       {/* Content preview */}
       <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
         {news.content?.slice(0, 150)}...{" "}
+        {/* Read More links to news detail page */}
         <Link
           to={`/news/${news._id}`}
           className="text-red-500 hover:underline font-medium"

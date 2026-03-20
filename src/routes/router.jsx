@@ -6,6 +6,7 @@ import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import Error from "../pages/Error";
 import Profile from "../pages/Profile";
+import NewsDetail from "../pages/NewsDetail";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
   path: "profile",
   element: <Profile />,
+},
+{
+  path: "news/:id",
+  element: <NewsDetail />,
 },
     ],
   },
