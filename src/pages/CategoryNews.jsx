@@ -12,16 +12,34 @@ const CategoryNews = () => {
 
   useEffect(() => {
     setLoading(true);
+    setNews([]);
 
-    // First get category name by id
+    // No id means home page — show all news
+    if (!id) {
+      axiosInstance
+        .get("/news")
+        .then((res) => {
+          setNews(res.data.news);
+          setTotal(res.data.total);
+          setCategoryName("All News");
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setLoading(false));
+      return;
+    }
+
+    // Has id — get category name then fetch by category
     axiosInstance
       .get(`/categories/${id}`)
       .then((res) => {
         const name = res.data.category.name;
         setCategoryName(name);
 
-        // If "All News" fetch everything, otherwise filter by name
-        const url = name === "All News" ? "/news" : `/news?category=${encodeURIComponent(name)}`;
+        // All News — fetch without filter
+        const url =
+          name === "All News"
+            ? "/news"
+            : `/news?category=${encodeURIComponent(name)}`;
         return axiosInstance.get(url);
       })
       .then((res) => {
@@ -60,7 +78,7 @@ const CategoryNews = () => {
     <div>
       <h2 className="font-semibold mb-2 dark:text-white">{categoryName}</h2>
       <p className="text-gray-400 text-sm mb-4">
-        {total} news found in this category
+        {total} news found
       </p>
       <div className="flex flex-col gap-4">
         {news.map((singleNews) => (
