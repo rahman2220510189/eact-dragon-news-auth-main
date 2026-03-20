@@ -7,6 +7,7 @@ import Register from "../Auth/Register";
 import Error from "../pages/Error";
 import Profile from "../pages/Profile";
 import NewsDetail from "../pages/NewsDetail";
+import Ai from "../pages/Ai";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   path: "news/:id",
   element: <NewsDetail />,
 },
+{
+  path:"fake-news-detector",
+  element: <Ai />
+}
     ],
   },
   {
