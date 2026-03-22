@@ -3,7 +3,7 @@ import axios from "axios";
 // Base axios instance — points to our own backend
 // TODO Part 2: change base URL after backend is ready
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://eact-dragon-news-auth-main-backend.onrender.com/api",
   withCredentials: true,
 });
 
