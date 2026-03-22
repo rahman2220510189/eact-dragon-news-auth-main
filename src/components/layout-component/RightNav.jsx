@@ -1,6 +1,13 @@
 import FindUs from "../FindUs";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaBriefcase, FaInfoCircle, FaUser, FaUserCircle } from "react-icons/fa";
+import {
+  FaHome,
+  FaBriefcase,
+  FaInfoCircle,
+  FaUser,
+  FaUserCircle,
+  FaUserShield,
+} from "react-icons/fa";
 import { FaShieldHalved } from "react-icons/fa6";
 import useAuth from "../../hooks/useAuth";
 
@@ -28,6 +35,12 @@ const RightNav = () => {
           <div className="overflow-hidden">
             <p className="font-semibold text-sm truncate dark:text-white">{user.name}</p>
             <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            {/* Admin badge */}
+            {user.role === "admin" && (
+              <span className="text-xs bg-red-100 text-red-500 px-1.5 py-0.5 rounded-full font-medium">
+                Admin
+              </span>
+            )}
           </div>
         </div>
       )}
@@ -49,12 +62,19 @@ const RightNav = () => {
             <FaShieldHalved className="text-red-500" /> Fake News Detector
           </NavLink>
 
-          {/* Profile + Logout or Login */}
           {user ? (
             <>
               <NavLink to="/profile" className={activeClass}>
                 <FaUserCircle /> Profile
               </NavLink>
+
+              {/* Admin Panel link — only for admins */}
+              {user.role === "admin" && (
+                <NavLink to="/admin" className={activeClass}>
+                  <FaUserShield className="text-red-500" /> Admin Panel
+                </NavLink>
+              )}
+
               <button
                 onClick={logout}
                 className="flex items-center gap-2 px-3 py-2 rounded text-sm font-medium bg-base-100 hover:bg-red-50 hover:text-red-500 transition dark:bg-gray-800 dark:text-gray-200"
@@ -67,13 +87,11 @@ const RightNav = () => {
               <FaUser /> Login
             </NavLink>
           )}
-
         </div>
       </div>
 
       {/* Social Media Follow Links */}
       <FindUs />
-
     </div>
   );
 };

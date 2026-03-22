@@ -14,6 +14,8 @@ import ManageUsers from "../pages/Admin/ManageUsers";
 import ManageNews from "../pages/Admin/ManageNews";
 import ManageCategories from "../pages/Admin/ManageCategories";
 import Ai from "../pages/Ai";
+import About from "../pages/About";
+import Career from "../pages/Career";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,15 @@ const router = createBrowserRouter([
         path: "fake-news-detector",
         element: <Ai />,
       },
+      {
+        path: "about",
+        element: <About></About>,
+
+      },
+      {
+        path: "career",
+        element: <Career></Career>
+      }
     ],
   },
   {
